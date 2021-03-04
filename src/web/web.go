@@ -17,8 +17,8 @@ import(
 )
 
 var client = &http.Client{}
-var nodeBaseAddress = "https://nodejs.org/dist/"
-var npmBaseAddress = "https://github.com/npm/cli/archive/"
+var nodeBaseAddress = "https://npm.taobao.org/mirrors/node/"
+var npmBaseAddress = "https://npm.taobao.org/mirrors/npm"
 // var oldNpmBaseAddress = "https://github.com/npm/npm/archive/"
 
 func SetProxy(p string, verifyssl bool){
