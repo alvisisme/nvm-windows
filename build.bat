@@ -1,4 +1,4 @@
-@echo on
+@echo off
 SET INNOSETUP=%CD%\nvm.iss
 SET ORIG=%CD%
 REM SET GOPATH=%CD%\src
