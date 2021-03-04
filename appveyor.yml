@@ -22,7 +22,7 @@ build_script:
   - cmd: .\build.bat
 
 artifacts:
-  - path: dist
+  - path: dist\**\
     name: binary
 
 deploy:
