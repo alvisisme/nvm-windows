@@ -1,4 +1,10 @@
-# 1.1.8
+# 更新日志
+
+## 1.1.9
+
+* 默认使用淘宝源，避免每次都要设置代理
+
+## 1.1.8
 
 * 修复路径存在空格导致无法编译的问题[#588](https://github.com/coreybutler/nvm-windows/issues/588)
 * 修复windows 10 64 位下无法编译的问题[#548](https://github.com/coreybutler/nvm-windows/issues/548)
