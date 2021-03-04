@@ -40,11 +40,12 @@ type Environment struct {
 }
 
 var home = filepath.Clean(os.Getenv("NVM_HOME") + "\\settings.txt")
+var root = filepath.Clean(os.Getenv("APPDATA") + "\\nvm")
 var symlink = filepath.Clean(os.Getenv("NVM_SYMLINK"))
 
 var env = &Environment{
 	settings:        home,
-	root:            "",
+	root:            root,
 	symlink:         symlink,
 	arch:            os.Getenv("PROCESSOR_ARCHITECTURE"),
 	node_mirror:     "",
@@ -735,32 +736,33 @@ func useArchitecture(a string) {
 func setup() {
 	lines, err := file.ReadLines(env.settings)
 	if err != nil {
-		fmt.Println("\nERROR", err)
-		os.Exit(1)
-	}
-
-	// Process each line and extract the value
-	for _, line := range lines {
-		line = strings.Trim(line, " \r\n")
-		if strings.HasPrefix(line, "root:") {
-			env.root = filepath.Clean(strings.TrimSpace(regexp.MustCompile("^root:").ReplaceAllString(line, "")))
-		} else if strings.HasPrefix(line, "originalpath:") {
-			env.originalpath = filepath.Clean(strings.TrimSpace(regexp.MustCompile("^originalpath:").ReplaceAllString(line, "")))
-		} else if strings.HasPrefix(line, "originalversion:") {
-			env.originalversion = strings.TrimSpace(regexp.MustCompile("^originalversion:").ReplaceAllString(line, ""))
-		} else if strings.HasPrefix(line, "arch:") {
-			env.arch = strings.TrimSpace(regexp.MustCompile("^arch:").ReplaceAllString(line, ""))
-		} else if strings.HasPrefix(line, "node_mirror:") {
-			env.node_mirror = strings.TrimSpace(regexp.MustCompile("^node_mirror:").ReplaceAllString(line, ""))
-		} else if strings.HasPrefix(line, "npm_mirror:") {
-			env.npm_mirror = strings.TrimSpace(regexp.MustCompile("^npm_mirror:").ReplaceAllString(line, ""))
-		} else if strings.HasPrefix(line, "proxy:") {
-			env.proxy = strings.TrimSpace(regexp.MustCompile("^proxy:").ReplaceAllString(line, ""))
-			if env.proxy != "none" && env.proxy != "" {
-				if strings.ToLower(env.proxy[0:4]) != "http" {
-					env.proxy = "http://" + env.proxy
+		// ignore the error, we will use the default value
+		// fmt.Println("\nERROR", err)
+		// os.Exit(1)
+	} else {
+		// Process each line and extract the value
+		for _, line := range lines {
+			line = strings.Trim(line, " \r\n")
+			if strings.HasPrefix(line, "root:") {
+				env.root = filepath.Clean(strings.TrimSpace(regexp.MustCompile("^root:").ReplaceAllString(line, "")))
+			} else if strings.HasPrefix(line, "originalpath:") {
+				env.originalpath = filepath.Clean(strings.TrimSpace(regexp.MustCompile("^originalpath:").ReplaceAllString(line, "")))
+			} else if strings.HasPrefix(line, "originalversion:") {
+				env.originalversion = strings.TrimSpace(regexp.MustCompile("^originalversion:").ReplaceAllString(line, ""))
+			} else if strings.HasPrefix(line, "arch:") {
+				env.arch = strings.TrimSpace(regexp.MustCompile("^arch:").ReplaceAllString(line, ""))
+			} else if strings.HasPrefix(line, "node_mirror:") {
+				env.node_mirror = strings.TrimSpace(regexp.MustCompile("^node_mirror:").ReplaceAllString(line, ""))
+			} else if strings.HasPrefix(line, "npm_mirror:") {
+				env.npm_mirror = strings.TrimSpace(regexp.MustCompile("^npm_mirror:").ReplaceAllString(line, ""))
+			} else if strings.HasPrefix(line, "proxy:") {
+				env.proxy = strings.TrimSpace(regexp.MustCompile("^proxy:").ReplaceAllString(line, ""))
+				if env.proxy != "none" && env.proxy != "" {
+					if strings.ToLower(env.proxy[0:4]) != "http" {
+						env.proxy = "http://" + env.proxy
+					}
+					web.SetProxy(env.proxy, env.verifyssl)
 				}
-				web.SetProxy(env.proxy, env.verifyssl)
 			}
 		}
 	}
