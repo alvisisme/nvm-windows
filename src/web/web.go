@@ -12,8 +12,8 @@ import(
 	"syscall"
   "crypto/tls"
   "strconv"
-  "../arch"
-  "../file"
+  "alvisisme/nvm/src/arch"
+  "alvisisme/nvm/src/file"
 )
 
 var client = &http.Client{}

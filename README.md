@@ -14,4 +14,5 @@
 
 ## 注意事项
 
+* 编译时设置go代理方便下载以来[代理设置](https://goproxy.io/zh/docs/getting-started.html)
 * 必须使用管理员权限运行本工具

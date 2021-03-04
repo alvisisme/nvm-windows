@@ -3,12 +3,12 @@ SET INNOSETUP=%CD%\nvm.iss
 SET ORIG=%CD%
 REM SET GOPATH=%CD%\src
 SET GOBIN=%CD%\bin
-REM Support for older architectures
+REM SET GOARCH=amd64
 SET GOARCH=amd64
 
 REM Cleanup existing build if it exists
-if exist src\nvm.exe (
-  del src\nvm.exe
+if exist nvm.exe (
+  del nvm.exe
 )
 
 REM Make the executable and add to the binary directory
@@ -18,8 +18,8 @@ go build src\nvm.go
 REM Group the file with the helper binaries
 move nvm.exe "%GOBIN%"
 
-REM Codesign the executable
-.\buildtools\signtools\x64\signtool.exe sign /debug /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a "%GOBIN%\nvm.exe"
+::REM Codesign the executable
+::.\buildtools\signtools\x64\signtool.exe sign /debug /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a "%GOBIN%\nvm.exe"
 
 
 for /f %%i in ('"%GOBIN%\nvm.exe" version') do set AppVersion=%%i
