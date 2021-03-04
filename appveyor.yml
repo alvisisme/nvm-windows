@@ -31,6 +31,7 @@ deploy:
   auth_token:
     secure: pPqb6qGq+cpAyYS/WRlmbJHVIptBixRQiglKWwLtBnaMZdmIZzc1J9MEvzEJsihc
   artifact: binary # This is the name we specified in the artifacts section.
+  force_update: true
   on: 
     branch: cn        # release from cn branch only
     APPVEYOR_REPO_TAG: true       # deploy on tag push only

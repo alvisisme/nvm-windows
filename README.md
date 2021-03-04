@@ -1,5 +1,7 @@
 # nvm-windows
 
+[![Build status](https://ci.appveyor.com/api/projects/status/v0cexq0t8yntw6o7/branch/cn?svg=true)](https://ci.appveyor.com/project/alvis-zhao/nvm-windows/branch/cn)
+
 个人定制版, 修复官方一些已知的问题
 
 ## 编译测试环境
