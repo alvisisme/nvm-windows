@@ -2,3 +2,4 @@
 *.exe binary
 *.dll binary
 *.e32 binary
+*.bmp binary
