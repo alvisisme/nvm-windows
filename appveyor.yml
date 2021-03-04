@@ -1,0 +1,39 @@
+# appveyor.yml
+version: 1.0.0.{build}
+
+platform: x64
+
+branches:
+  only:
+    - master
+
+clone_folder: c:\gopath\src\github.com\$username\$project
+
+environment:
+  GOPATH: c:\gopath
+
+install:
+  - echo %PATH%
+  - echo %GOPATH%
+  - set PATH=%GOPATH%\bin;c:\go\bin;%PATH%
+  - go version
+  - go env
+
+build_script:
+  - cmd: .\build.bat
+
+artifacts:
+  - path: dist
+    name: binary
+
+deploy:
+  release: nvm-$(appveyor_build_version)
+  description: 'This is a release of nvm.'
+  provider: GitHub
+  auth_token:
+    secure: FW3tJ3fMncxvs58/ifSP7w+kBl9BlxvRMr9liHmnBs14ALRG8Vfyol+sNhj9u2JA
+  artifact: binary # This is the name we specified in the artifacts section.
+  draft: false
+  prerelease: false
+  on:
+    branch: master
