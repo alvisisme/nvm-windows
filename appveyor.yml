@@ -5,17 +5,18 @@ platform: x64
 
 branches:
   only:
-    - master
-
-clone_folder: c:\gopath\src\github.com\$username\$project
+    - ci
 
 environment:
   GOPATH: c:\gopath
+  GO111MODULE: on
+  GOVERSION: 1.16
 
 install:
-  - echo %PATH%
-  - echo %GOPATH%
-  - set PATH=%GOPATH%\bin;c:\go\bin;%PATH%
+  # Install the specific Go version. See https://help.appveyor.com/discussions/problems/1215-go-14-support
+  - rd C:\Go /s /q
+  - appveyor DownloadFile https://storage.googleapis.com/golang/go%GOVERSION%.windows-amd64.zip
+  - 7z x go%GOVERSION%.windows-amd64.zip -oC:\ >nul
   - go version
   - go env
 
@@ -27,13 +28,12 @@ artifacts:
     name: binary
 
 deploy:
-  release: nvm-$(appveyor_build_version)
-  description: 'This is a release of nvm.'
   provider: GitHub
+  description: "This is a new release."
+  tag: $(APPVEYOR_REPO_TAG_NAME)
   auth_token:
-    secure: FW3tJ3fMncxvs58/ifSP7w+kBl9BlxvRMr9liHmnBs14ALRG8Vfyol+sNhj9u2JA
+    secure: pPqb6qGq+cpAyYS/WRlmbJHVIptBixRQiglKWwLtBnaMZdmIZzc1J9MEvzEJsihc
   artifact: binary # This is the name we specified in the artifacts section.
-  draft: false
-  prerelease: false
-  on:
-    branch: master
+  on: 
+    branch: ci        # release from cn branch only
+    APPVEYOR_REPO_TAG: true       # deploy on tag push only
